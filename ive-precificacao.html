@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ive. — Precificação</title>
+  <style>
+    /* ===== CSS VARIABLES (APPLE-INSPIRED PALETTE) ===== */
+    :root {
+      --bg: #F5F5F7;
+      --card-bg: #FFFFFF;
+      --text-primary: #1D1D1F;
+      --text-secondary: #86868B;
+      --text-tertiary: #BFBFBF;
+      --border: #D2D2D7;
+      --accent: #0066CC;
+      --accent-hover: #004499;
+      --green: #34C759;
+      --orange: #FF9500;
+      --red: #FF3B30;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03);
+      --radius: 14px;
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      color: var(--text-primary);
+      padding: 3rem 1rem;
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .header .brand {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+
+    .header h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--text-primary);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .header .subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+      font-weight: 400;
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+      transition: box-shadow 0.25s ease, opacity 0.4s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .card h2 {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    /* ===== COST INPUTS ===== */
+    .cost-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.875rem;
+      margin-bottom: 1rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .input-group label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .input-group input {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      padding: 0.65rem 0.85rem;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--card-bg);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      min-height: 44px;
+    }
+
+    .input-group input::placeholder {
+      color: var(--text-tertiary);
+      font-size: 0.85rem;
+    }
+
+    .input-group input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.12);
+    }
+
+    .input-group .input-hint {
+      font-size: 0.72rem;
+      color: var(--text-tertiary);
+      font-style: italic;
+      margin-top: -0.1rem;
+    }
+
+    /* ===== CUSTOM COSTS ===== */
+    #custom-costs-container {
+      margin-bottom: 0.75rem;
+    }
+
+    .custom-cost-row {
+      display: flex;
+      gap: 0.625rem;
+      align-items: flex-end;
+      margin-bottom: 0.625rem;
+      animation: fadeSlideIn 0.25s ease;
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .custom-cost-row .input-group {
+      flex: 1;
+    }
+
+    .custom-cost-row .input-group:first-child {
+      flex: 1.5;
+    }
+
+    .btn-remove-cost {
+      background: none;
+      border: none;
+      color: var(--red);
+      font-size: 1.4rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0.5rem 0.65rem;
+      border-radius: 8px;
+      transition: background 0.2s ease, transform 0.15s ease;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-bottom: 0.1rem;
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    .btn-remove-cost:hover {
+      background: rgba(255, 59, 48, 0.08);
+      transform: scale(1.1);
+    }
+
+    .btn-remove-cost:active {
+      transform: scale(0.95);
+    }
+
+    /* ===== ADD COST BUTTON ===== */
+    .btn-add-cost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: none;
+      border: 1.5px dashed var(--text-tertiary);
+      color: var(--text-secondary);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.65rem 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      min-height: 44px;
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .btn-add-cost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0, 102, 204, 0.04);
+    }
+
+    .btn-add-cost:active {
+      transform: scale(0.98);
+    }
+
+    .btn-add-cost .plus-icon {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* ===== TOTAL COST DISPLAY ===== */
+    .total-costs {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1.5px solid var(--border);
+    }
+
+    .total-costs .label {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .total-costs .value {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--text-primary);
+    }
+
+    /* ===== MARKUP SLIDER ===== */
+    .slider-section {
+      margin-bottom: 0.5rem;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.75rem;
+    }
+
+    .slider-header .label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .slider-header .markup-value {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .slider-header .markup-value .times {
+      font-weight: 400;
+      font-size: 1rem;
+      color: var(--text-tertiary);
+    }
+
+    /* Custom Range Slider */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      background: #E8E8ED;
+      border-radius: 4px;
+      outline: none;
+      margin: 0.5rem 0;
+      transition: background 0.2s ease;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 6px;
+      border-radius: 4px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      margin-top: -9px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+
+    input[type="range"]::-moz-range-track {
+      height: 6px;
+      border-radius: 4px;
+      background: #E8E8ED;
+      border: none;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .markup-description {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 0.6rem;
+      font-weight: 400;
+      transition: color 0.2s ease;
+    }
+
+    .markup-description strong {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    /* ===== RESULT CARD (DESTAQUE) ===== */
+    .result-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card h2 {
+      margin-bottom: 1rem;
+    }
+
+    .price-display {
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: var(--text-primary);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    @keyframes pricePulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    .price-display.pulse {
+      animation: pricePulse 0.3s ease;
+    }
+
+    .result-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      padding: 0.85rem 0;
+      border-top: 1.5px solid var(--border);
+      border-bottom: 1.5px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .result-metrics .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .result-metrics .metric-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .result-metrics .metric-value {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+
+    /* Health Indicator */
+    .health-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 100px;
+      font-weight: 500;
+      font-size: 0.83rem;
+      letter-spacing: 0.01em;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .health-indicator.healthy {
+      background: rgba(52, 199, 89, 0.1);
+      color: #1A7D36;
+    }
+
+    .health-indicator.moderate {
+      background: rgba(255, 149, 0, 0.1);
+      color: #C93400;
+    }
+
+    .health-indicator.critical {
+      background: rgba(255, 59, 48, 0.1);
+      color: #BF2A1F;
+    }
+
+    .health-indicator .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .health-indicator.healthy .dot { background: var(--green); }
+    .health-indicator.moderate .dot { background: var(--orange); }
+    .health-indicator.critical .dot { background: var(--red); }
+
+    .health-indicator.healthy .dot {
+      box-shadow: 0 0 8px rgba(52, 199, 89, 0.4);
+    }
+    .health-indicator.moderate .dot {
+      box-shadow: 0 0 8px rgba(255, 149, 0, 0.4);
+    }
+    .health-indicator.critical .dot {
+      box-shadow: 0 0 8px rgba(255, 59, 48, 0.4);
+    }
+
+    /* ===== SCENARIOS ===== */
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.875rem;
+    }
+
+    .scenario-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .scenario-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .scenario-card:hover {
+      border-color: var(--text-tertiary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .scenario-card.is-current {
+      border-left: 3px solid var(--accent);
+    }
+
+    .scenario-name {
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .scenario-name .emoji {
+      font-size: 1rem;
+    }
+
+    .scenario-desc {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-bottom: 0.6rem;
+      margin-top: -0.4rem;
+      line-height: 1.3;
+    }
+
+    .scenario-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .scenario-details .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+
+    .scenario-details .row .sc-label {
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .scenario-details .row .sc-value {
+      color: var(--text-primary);
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .scenario-details .row .sc-value.highlight {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* Mini progress bar */
+    .mini-bar {
+      width: 100%;
+      height: 4px;
+      background: #E8E8ED;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 0.25rem;
+    }
+
+    .mini-bar .fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s ease, background 0.3s ease;
+    }
+
+    .mini-bar .fill.healthy { background: var(--green); }
+    .mini-bar .fill.moderate { background: var(--orange); }
+    .mini-bar .fill.critical { background: var(--red); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      body {
+        padding: 1.5rem 0.75rem;
+      }
+
+      .card {
+        padding: 1.25rem;
+        border-radius: 12px;
+      }
+
+      .cost-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .custom-cost-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 0.5rem;
+        align-items: end;
+        padding: 0;
+        border: none;
+        margin-bottom: 0.75rem;
+      }
+
+      .custom-cost-row .input-group:first-child {
+        grid-column: 1 / -1;
+      }
+
+      .custom-cost-row .input-group {
+        width: 100%;
+      }
+
+      .custom-cost-row .custom-cost-type {
+        width: 100%;
+        min-height: 44px;
+      }
+
+      .input-group input,
+      .custom-cost-type,
+      .btn-add-cost,
+      .btn-remove-cost {
+        font-size: 16px;
+      }
+
+      .btn-remove-cost {
+        justify-self: center;
+        margin-bottom: 0.1rem;
+      }
+
+      .price-display {
+        font-size: 2rem;
+      }
+
+      .result-metrics {
+        gap: 1rem;
+      }
+
+      .scenarios-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .slider-header .markup-value {
+        font-size: 1.3rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .card {
+        padding: 1rem;
+      }
+
+      .price-display {
+        font-size: 1.7rem;
+      }
+
+      .result-metrics {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .result-metrics .metric {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    /* ===== UTILITY ===== */
+    .text-muted {
+      color: var(--text-secondary);
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .footer-credit {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      margin-top: 2rem;
+      padding-bottom: 1rem;
+    }
+
+    /* ===== CUSTOM COST TYPE SELECT ===== */
+    .custom-cost-type {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      padding: 0.65rem 0.5rem;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--card-bg);
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      min-height: 44px;
+      appearance: auto;
+      -webkit-appearance: auto;
+    }
+
+    .custom-cost-type:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.12);
+    }
+
+    /* ===== TOTAL COSTS DETAIL ===== */
+    .total-costs-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .total-costs-detail {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-top: 0.4rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .total-costs-detail .label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .total-costs-detail .value {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+
+    /* ===== EXPORT BUTTON ===== */
+    .export-wrapper {
+      text-align: center;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .btn-export {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      min-height: 44px;
+      line-height: 1.2;
+    }
+
+    .btn-export:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-export:active {
+      transform: scale(0.98);
+    }
+
+    .btn-export.copied {
+      background: var(--green);
+      transform: none;
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      body {
+        background: white;
+        padding: 0.5in;
+      }
+      .card {
+        box-shadow: none;
+        border: 1px solid var(--border);
+        break-inside: avoid;
+      }
+      .btn-add-cost,
+      .btn-remove-cost {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- HEADER -->
+    <header class="header">
+      <p class="brand">ive.</p>
+      <h1>Precificação</h1>
+      <p class="subtitle">Calcule seus preços com markup e cenários</p>
+    </header>
+
+    <!-- ===== SECTION 1: CUSTOS ===== -->
+    <section class="card" id="costs-section">
+      <h2>Custos do Produto</h2>
+
+      <div class="cost-grid">
+        <div class="input-group">
+          <label for="custo-produto">Custo do produto</label>
+          <input type="text" id="custo-produto" inputmode="decimal" placeholder="Ex: 89,90" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label for="frete">Frete unitário</label>
+          <input type="text" id="frete" inputmode="decimal" placeholder="Ex: 12,00" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label for="embalagem">Embalagem</label>
+          <input type="text" id="embalagem" inputmode="decimal" placeholder="Ex: 3,50" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label for="taxas">Taxas fixas</label>
+          <input type="text" id="taxas" inputmode="decimal" placeholder="Ex: 5,00" autocomplete="off">
+          <span class="input-hint">taxas de gateway, plataforma, etc</span>
+        </div>
+      </div>
+
+      <!-- Custom costs container -->
+      <div id="custom-costs-container"></div>
+
+      <!-- Add custom cost button -->
+      <button class="btn-add-cost" id="btn-add-cost" type="button">
+        <span class="plus-icon">+</span> Adicionar custo personalizado
+      </button>
+
+      <!-- Total costs -->
+      <div class="total-costs">
+        <div class="total-costs-main">
+          <span class="label">Custos Fixos Totais</span>
+          <span class="value" id="total-custo-display">R$ 0,00</span>
+        </div>
+        <div class="total-costs-detail" id="percentual-info" style="display:none;">
+          <span class="label">Custos Percentuais</span>
+          <span class="value" id="total-percentual-display">0,0%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 2: MARKUP ===== -->
+    <section class="card" id="markup-section">
+      <h2>Markup (Fator Multiplicador)</h2>
+
+      <div class="slider-section">
+        <div class="slider-header">
+          <span class="label">Fator</span>
+          <span class="markup-value" id="markup-value-display">2,0<span class="times">×</span></span>
+        </div>
+
+        <input type="range" id="markup-slider" min="1.0" max="4.0" step="0.1" value="2.0">
+
+        <p class="markup-description" id="markup-description">
+          <strong>Margem equilibrada</strong> — bom custo-benefício
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 3: RESULTADO PRINCIPAL ===== -->
+    <section class="card result-card" id="result-section">
+      <h2>Preço de Venda Sugerido</h2>
+
+      <div class="price-display" id="preco-venda-display">R$ 0,00</div>
+
+      <div class="result-metrics">
+        <div class="metric">
+          <span class="metric-label">Custo Total</span>
+          <span class="metric-value" id="metric-custo-total">R$ 0,00</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Lucro Estimado</span>
+          <span class="metric-value" id="metric-lucro">R$ 0,00</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Margem</span>
+          <span class="metric-value" id="metric-margem">0,0%</span>
+        </div>
+      </div>
+
+      <div class="health-indicator healthy" id="health-indicator">
+        <span class="dot"></span>
+        <span id="health-text">Margem Saudável</span>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 4: CENÁRIOS ===== -->
+    <section class="card" id="scenarios-section">
+      <h2>Cenários de Markup</h2>
+
+      <div class="scenarios-grid" id="scenarios-grid">
+        <!-- Cenário Baixo -->
+        <div class="scenario-card" id="scenario-baixo">
+          <div class="scenario-name">
+            <span class="emoji">🔴</span> Cenário Baixo
+          </div>
+          <div class="scenario-desc">Margem apertada — pouco lucro por unidade</div>
+          <div class="scenario-details">
+            <div class="row">
+              <span class="sc-label">Markup</span>
+              <span class="sc-value" id="sc-con-mk">—</span>
+            </div>
+            <div class="row">
+              <span class="sc-label">Preço</span>
+              <span class="sc-value highlight" id="sc-con-preco">R$ 0,00</span>
+            </div>
+            <div class="row">
+              <span class="sc-label">Lucro</span>
+              <span class="sc-value" id="sc-con-lucro">R$ 0,00</span>
+            </div>
+            <div class="row">
+              <span class="sc-label">Margem</span>
+              <span class="sc-value" id="sc-con-margem">0,0%</span>
+            </div>
+          </div>
+          <div class="mini-bar">
+            <div class="fill moderate" id="sc-con-bar" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Cenário Atual (destacado) -->
+        <div class="scenario-card is-current" id="scenario-atual">
+          <div class="scenario-name">
+            <span class="emoji">🟣</span> Cenário Atual
+          </div>
+          <div class="scenario-desc">Seu markup atual</div>
+          <div class="scenario-details">
+            <div class="row">
+              <span class="sc-label">Markup</span>
+              <span class="sc-value" id="sc-atual-mk">—</span>
+            </div>
+            <div class="row">
+              <span class="sc-label">Preço</span>
+              <span class="sc-value highlight" id="sc-atual-preco">R$ 0,00</span>
+            </div>
+            <div class="row">
+              <span class="sc-label">Lucro</span>
+              <span class="sc-value" id="sc-atual-lucro">R$ 0,00</span>
+            </div>
+            <div class="row">
+              <span class="sc-label">Margem</span>
+              <span class="sc-value" id="sc-atual-margem">0,0%</span>
+            </div>
+          </div>
+          <div class="mini-bar">
+            <div class="fill moderate" id="sc-atual-bar" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Cenário Alto -->
+        <div class="scenario-card" id="scenario-alto">
+          <div class="scenario-name">
+            <span class="emoji">🟢</span> Cenário Alto
+          </div>
+          <div class="scenario-desc">Margem confortável — maior retorno</div>
+          <div class="scenario-details">
+            <div class="row">
+              <span class="sc-label">Markup</span>
+              <span class="sc-value" id="sc-oti-mk">—</span>
+            </div>
+            <div class="row">
+              <span class="sc-label">Preço</span>
+              <span class="sc-value highlight" id="sc-oti-preco">R$ 0,00</span>
+            </div>
+            <div class="row">
+              <span class="sc-label">Lucro</span>
+              <span class="sc-value" id="sc-oti-lucro">R$ 0,00</span>
+            </div>
+            <div class="row">
+              <span class="sc-label">Margem</span>
+              <span class="sc-value" id="sc-oti-margem">0,0%</span>
+            </div>
+          </div>
+          <div class="mini-bar">
+            <div class="fill moderate" id="sc-oti-bar" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXPORT ===== -->
+    <div class="export-wrapper">
+      <button class="btn-export" id="btn-export" type="button">
+        📋 Copiar Resumo
+      </button>
+    </div>
+
+    <div class="footer-credit">
+      ive. · ferramenta interna
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      /* ===== UTILITY FUNCTIONS ===== */
+
+      /**
+       * Parse a Brazilian currency string into a number.
+       * Accepts "89,90", "89.90", "R$ 89,90", "1.234,56", etc.
+       */
+      function parseCurrency(value) {
+        if (typeof value !== 'string' || !value) return 0;
+        var cleaned = value.replace(/[^\d,.]/g, '').trim();
+        if (!cleaned) return 0;
+        // If the string has a comma, remove all dots (thousands separators)
+        // then replace the comma with a dot (decimal)
+        if (cleaned.indexOf(',') !== -1) {
+          cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+        }
+        var num = parseFloat(cleaned);
+        return isFinite(num) && num >= 0 ? num : 0;
+      }
+
+      /**
+       * Format a number as BRL currency.
+       */
+      function formatCurrency(value) {
+        return new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(value);
+      }
+
+      /**
+       * Format a number with one decimal place (pt-BR).
+       */
+      function formatPercent(value) {
+        return value.toLocaleString('pt-BR', {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1
+        }) + '%';
+      }
+
+      /**
+       * Format markup factor with one decimal.
+       */
+      function formatMarkup(value) {
+        return value.toLocaleString('pt-BR', {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1
+        }) + '\u00D7';
+      }
+
+      /**
+       * Get the health level and label for a margin percentage.
+       */
+      function getHealth(margin) {
+        if (margin >= 40) {
+          return { level: 'healthy', label: 'Margem Saud\u00E1vel', class: 'healthy' };
+        } else if (margin >= 20) {
+          return { level: 'moderate', label: 'Margem Moderada', class: 'moderate' };
+        } else {
+          return { level: 'critical', label: 'Margem Cr\u00EDtica', class: 'critical' };
+        }
+      }
+
+      /**
+       * Get the fill color class for a margin percentage.
+       */
+      function getFillClass(margin) {
+        if (margin >= 40) return 'healthy';
+        if (margin >= 20) return 'moderate';
+        return 'critical';
+      }
+
+      /**
+       * Get the markup scenario description.
+       */
+      function getMarkupDescription(markup) {
+        if (markup <= 1.3) return { title: 'Margem muito apertada', subtitle: 'quase sem margem de lucro' };
+        if (markup <= 1.7) return { title: 'Margem conservadora', subtitle: 'cobre custos com pouco lucro' };
+        if (markup <= 2.2) return { title: 'Margem equilibrada', subtitle: 'bom custo-benef\u00EDcio' };
+        if (markup <= 2.8) return { title: 'Margem confort\u00E1vel', subtitle: 'excelente retorno sobre o custo' };
+        return { title: 'Margem premium', subtitle: 'lucro elevado, posicionamento premium' };
+      }
+
+      /* ===== DOM REFS ===== */
+      var $ = function(id) { return document.getElementById(id); };
+
+      var custoProduto   = $('custo-produto');
+      var frete          = $('frete');
+      var embalagem      = $('embalagem');
+      var taxas          = $('taxas');
+      var customContainer = $('custom-costs-container');
+      var btnAddCost     = $('btn-add-cost');
+      var totalDisplay   = $('total-custo-display');
+
+      var markupSlider   = $('markup-slider');
+      var markupDisplay  = $('markup-value-display');
+      var markupDesc     = $('markup-description');
+
+      var precoDisplay   = $('preco-venda-display');
+      var metricCusto    = $('metric-custo-total');
+      var metricLucro    = $('metric-lucro');
+      var metricMargem   = $('metric-margem');
+      var healthIndicator = $('health-indicator');
+      var healthText     = $('health-text');
+
+      // Scenario elements
+      var sc = {
+        con: {
+          mk: $('sc-con-mk'), preco: $('sc-con-preco'), lucro: $('sc-con-lucro'),
+          margem: $('sc-con-margem'), bar: $('sc-con-bar')
+        },
+        atual: {
+          mk: $('sc-atual-mk'), preco: $('sc-atual-preco'), lucro: $('sc-atual-lucro'),
+          margem: $('sc-atual-margem'), bar: $('sc-atual-bar')
+        },
+        oti: {
+          mk: $('sc-oti-mk'), preco: $('sc-oti-preco'), lucro: $('sc-oti-lucro'),
+          margem: $('sc-oti-margem'), bar: $('sc-oti-bar')
+        }
+      };
+
+      var customCostCounter = 0;
+      var copyTimer = null;
+
+      /* ===== CUSTOM COSTS ===== */
+
+      function createCustomCostRow(name, value) {
+        customCostCounter++;
+        var index = customCostCounter;
+
+        var row = document.createElement('div');
+        row.className = 'custom-cost-row';
+        row.dataset.index = index;
+
+        // Name input group
+        var nameGroup = document.createElement('div');
+        nameGroup.className = 'input-group';
+        var nameLabel = document.createElement('label');
+        nameLabel.textContent = 'Nome';
+        nameLabel.htmlFor = 'custom-name-' + index;
+        var nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.id = 'custom-name-' + index;
+        nameInput.className = 'custom-cost-name';
+        nameInput.placeholder = 'Ex: Comiss\u00E3o, Etiqueta';
+        nameInput.autocomplete = 'off';
+        if (name) nameInput.value = name;
+        nameGroup.appendChild(nameLabel);
+        nameGroup.appendChild(nameInput);
+
+        // Type select group
+        var typeGroup = document.createElement('div');
+        typeGroup.className = 'input-group';
+        var typeLabel = document.createElement('label');
+        typeLabel.textContent = 'Tipo';
+        typeLabel.htmlFor = 'custom-type-' + index;
+        var typeSelect = document.createElement('select');
+        typeSelect.id = 'custom-type-' + index;
+        typeSelect.className = 'custom-cost-type';
+        var optFixed = document.createElement('option');
+        optFixed.value = 'fixo';
+        optFixed.textContent = 'Fixo (R$)';
+        var optPercent = document.createElement('option');
+        optPercent.value = 'percentual';
+        optPercent.textContent = 'Percentual (%)';
+        typeSelect.appendChild(optFixed);
+        typeSelect.appendChild(optPercent);
+        typeGroup.appendChild(typeLabel);
+        typeGroup.appendChild(typeSelect);
+
+        // Value input group
+        var valueGroup = document.createElement('div');
+        valueGroup.className = 'input-group';
+        var valueLabel = document.createElement('label');
+        valueLabel.textContent = 'Valor (R$)';
+        valueLabel.htmlFor = 'custom-value-' + index;
+        var valueInput = document.createElement('input');
+        valueInput.type = 'text';
+        valueInput.id = 'custom-value-' + index;
+        valueInput.className = 'custom-cost-value';
+        valueInput.placeholder = 'R$ 0,00';
+        valueInput.inputMode = 'decimal';
+        valueInput.autocomplete = 'off';
+        if (value) valueInput.value = value;
+        valueGroup.appendChild(valueLabel);
+        valueGroup.appendChild(valueInput);
+
+        // Update value label/placeholder when type changes
+        typeSelect.addEventListener('change', function() {
+          if (typeSelect.value === 'percentual') {
+            valueLabel.textContent = 'Valor (%)';
+            valueInput.placeholder = 'Ex: 10%';
+          } else {
+            valueLabel.textContent = 'Valor (R$)';
+            valueInput.placeholder = 'R$ 0,00';
+          }
+        });
+
+        // Remove button
+        var removeBtn = document.createElement('button');
+        removeBtn.className = 'btn-remove-cost';
+        removeBtn.type = 'button';
+        removeBtn.title = 'Remover custo';
+        removeBtn.innerHTML = '\u00D7';
+        removeBtn.addEventListener('click', function() {
+          removeCustomCostRow(row);
+        });
+
+        row.appendChild(nameGroup);
+        row.appendChild(typeGroup);
+        row.appendChild(valueGroup);
+        row.appendChild(removeBtn);
+
+        // Real-time calculation on input
+        nameInput.addEventListener('input', calculateAll);
+        valueInput.addEventListener('input', calculateAll);
+        typeSelect.addEventListener('change', calculateAll);
+
+        return row;
+      }
+
+      function addCustomCostRow(name, value) {
+        var row = createCustomCostRow(name, value);
+        customContainer.appendChild(row);
+        updateRemoveButtons();
+        calculateAll();
+      }
+
+      function removeCustomCostRow(row) {
+        if (customContainer.querySelectorAll('.custom-cost-row').length <= 1) return;
+        row.remove();
+        updateRemoveButtons();
+        calculateAll();
+      }
+
+      function updateRemoveButtons() {
+        var rows = customContainer.querySelectorAll('.custom-cost-row');
+        var btns = customContainer.querySelectorAll('.btn-remove-cost');
+        // Only show remove buttons if more than one row
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].style.display = rows.length > 1 ? '' : 'none';
+        }
+      }
+
+      /* ===== CALCULATIONS ===== */
+
+      function getCustomCostsSplit() {
+        var rows = customContainer.querySelectorAll('.custom-cost-row');
+        var totalFixo = 0;
+        var totalPercentual = 0;
+        for (var i = 0; i < rows.length; i++) {
+          var tipoSelect = rows[i].querySelector('.custom-cost-type');
+          var valueInput = rows[i].querySelector('.custom-cost-value');
+          var val = parseCurrency(valueInput ? valueInput.value : '');
+          if (tipoSelect && tipoSelect.value === 'percentual') {
+            totalPercentual += val;
+          } else {
+            totalFixo += val;
+          }
+        }
+        return { fixo: totalFixo, percentual: totalPercentual };
+      }
+
+      function calculateAll() {
+        // Parse all inputs
+        var cp = parseCurrency(custoProduto.value);
+        var fr = parseCurrency(frete.value);
+        var em = parseCurrency(embalagem.value);
+        var tx = parseCurrency(taxas.value);
+        var split = getCustomCostsSplit();
+
+        var custoFixoTotal = cp + fr + em + tx + split.fixo;
+        var percentualTotal = split.percentual;
+
+        // Markup
+        var markup = parseFloat(markupSlider.value) || 1.0;
+
+        // Price with percentual costs: Preço = CustoFixoTotal × markup / (1 - percentualTotal/100)
+        var divisor = 1 - (percentualTotal / 100);
+        var precoVenda, lucro, margem;
+
+        if (divisor <= 0) {
+          // Invalid: percentuais >= 100% tornam o cálculo impossível
+          precoVenda = 0;
+          lucro = 0;
+          margem = 0;
+        } else {
+          precoVenda = (custoFixoTotal * markup) / divisor;
+          lucro = precoVenda - custoFixoTotal - (precoVenda * percentualTotal / 100);
+          margem = precoVenda > 0 ? (lucro / precoVenda) * 100 : 0;
+        }
+
+        // Clamp margin to 0-100
+        margem = Math.max(0, Math.min(100, margem));
+
+        // ---- Update UI ----
+
+        // Total costs
+        totalDisplay.textContent = formatCurrency(custoFixoTotal);
+
+        // Percentual info
+        var percentualInfo = document.getElementById('percentual-info');
+        var percentualDisplay = document.getElementById('total-percentual-display');
+        if (percentualTotal > 0) {
+          percentualInfo.style.display = 'flex';
+          percentualDisplay.textContent = percentualTotal.toLocaleString('pt-BR', {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+          }) + '%';
+        } else {
+          percentualInfo.style.display = 'none';
+        }
+
+        // Markup display
+        markupDisplay.innerHTML = markup.toLocaleString('pt-BR', {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1
+        }) + '<span class="times">\u00D7</span>';
+
+        // Markup description
+        var desc = getMarkupDescription(markup);
+        markupDesc.innerHTML = '<strong>' + desc.title + '</strong> \u2014 ' + desc.subtitle;
+
+        // Result
+        precoDisplay.textContent = formatCurrency(precoVenda);
+        // Pulse animation on price
+        precoDisplay.classList.remove('pulse');
+        void precoDisplay.offsetWidth;
+        precoDisplay.classList.add('pulse');
+        metricCusto.textContent = formatCurrency(custoFixoTotal);
+        metricLucro.textContent = formatCurrency(lucro);
+        metricMargem.textContent = formatPercent(margem);
+
+        // Health indicator
+        var health = getHealth(margem);
+        healthIndicator.className = 'health-indicator ' + health.class;
+        healthText.textContent = health.label;
+
+        // ---- Scenarios ----
+        var consMarkup = Math.max(1.0, markup - 0.5);
+        var otiMarkup = Math.min(4.0, parseFloat((markup * 1.35).toFixed(1)));
+
+        if (markup <= 1.1 || consMarkup === markup) {
+          sc.con.mk.textContent = '\u2014';
+          sc.con.preco.textContent = '\u2014';
+          sc.con.lucro.textContent = '\u2014';
+          sc.con.margem.textContent = '\u2014';
+          sc.con.bar.style.width = '0%';
+        } else {
+          updateScenario(sc.con, consMarkup, custoFixoTotal, percentualTotal);
+        }
+
+        updateScenario(sc.atual, markup, custoFixoTotal, percentualTotal);
+        updateScenario(sc.oti, otiMarkup, custoFixoTotal, percentualTotal);
+
+        // Stagger animation for scenario cards
+        animateScenarios();
+      }
+
+      function updateScenario(elem, markupValue, custoFixo, percTotal) {
+        var divisor = 1 - (percTotal / 100);
+        var preco, lucro, margem;
+
+        if (divisor <= 0) {
+          preco = 0;
+          lucro = 0;
+          margem = 0;
+        } else {
+          preco = (custoFixo * markupValue) / divisor;
+          lucro = preco - custoFixo - (preco * percTotal / 100);
+          margem = preco > 0 ? (lucro / preco) * 100 : 0;
+        }
+
+        margem = Math.max(0, Math.min(100, margem));
+
+        elem.mk.textContent = formatMarkup(markupValue);
+        elem.preco.textContent = formatCurrency(preco);
+        elem.lucro.textContent = formatCurrency(lucro);
+        elem.margem.textContent = formatPercent(margem);
+
+        var barWidth = Math.min(100, margem);
+        elem.bar.style.width = barWidth + '%';
+        elem.bar.className = 'fill ' + getFillClass(margem);
+      }
+
+      /* ===== STAGGER ANIMATION ===== */
+
+      function animateScenarios() {
+        var cards = document.querySelectorAll('.scenario-card');
+        for (var i = 0; i < cards.length; i++) {
+          (function(index) {
+            setTimeout(function() {
+              cards[index].classList.add('visible');
+            }, index * 100);
+          })(i);
+        }
+      }
+
+      /* ===== COPY SUMMARY ===== */
+
+      function copySummary() {
+        var cp = parseCurrency(custoProduto.value);
+        var fr = parseCurrency(frete.value);
+        var em = parseCurrency(embalagem.value);
+        var tx = parseCurrency(taxas.value);
+        var split = getCustomCostsSplit();
+        var custoFixoTotal = cp + fr + em + tx + split.fixo;
+        var percentualTotal = split.percentual;
+        var markup = parseFloat(markupSlider.value) || 1.0;
+
+        var divisor = 1 - (percentualTotal / 100);
+        var precoVenda, lucro, margem;
+        if (divisor > 0) {
+          precoVenda = (custoFixoTotal * markup) / divisor;
+          lucro = precoVenda - custoFixoTotal - (precoVenda * percentualTotal / 100);
+          margem = precoVenda > 0 ? (lucro / precoVenda) * 100 : 0;
+        } else {
+          precoVenda = 0;
+          lucro = 0;
+          margem = 0;
+        }
+
+        var today = new Date();
+        var dateStr = today.toLocaleDateString('pt-BR');
+
+        // Build custom costs text
+        var customCostsText = '';
+        var rows = customContainer.querySelectorAll('.custom-cost-row');
+        for (var i = 0; i < rows.length; i++) {
+          var nameInput = rows[i].querySelector('.custom-cost-name');
+          var tipoSelect = rows[i].querySelector('.custom-cost-type');
+          var valueInput = rows[i].querySelector('.custom-cost-value');
+          var name = nameInput ? (nameInput.value || 'Custo ' + (i + 1)) : 'Custo ' + (i + 1);
+          var tipo = tipoSelect && tipoSelect.value === 'percentual' ? '%' : 'R$';
+          var val = valueInput ? valueInput.value : '';
+          customCostsText += name + ' (' + tipo + '):       ' + val + '\n';
+        }
+
+        // Health emoji
+        var healthEmoji = margem >= 40 ? '\uD83D\uDFE2' : (margem >= 20 ? '\uD83D\uDFE1' : '\uD83D\uDD34');
+        var healthLabel = margem >= 40 ? 'Saud\u00E1vel' : (margem >= 20 ? 'Moderada' : 'Cr\u00EDtica');
+
+        // Scenario helpers
+        function calcPreco(mk) {
+          var d = 1 - (percentualTotal / 100);
+          if (d <= 0) return null;
+          return (custoFixoTotal * mk) / d;
+        }
+        function calcMargemP(p) {
+          if (!p || p <= 0) return null;
+          return ((p - custoFixoTotal - (p * percentualTotal / 100)) / p) * 100;
+        }
+
+        var consMarkupRaw = Math.max(1.0, markup - 0.5);
+        var consMarkup = (markup <= 1.1 || consMarkupRaw === markup) ? null : consMarkupRaw;
+        var otiMarkup = Math.min(4.0, parseFloat((markup * 1.35).toFixed(1)));
+
+        var text = 'ive. \u2014 Precifica\u00E7\u00E3o\n';
+        text += '\u2500'.repeat(41) + '\n\n';
+        text += '\uD83D\uDCE6 CUSTOS\n';
+        text += 'Custo do produto:  ' + formatCurrency(cp) + '\n';
+        text += 'Frete unit\u00E1rio:    ' + formatCurrency(fr) + '\n';
+        text += 'Embalagem:         ' + formatCurrency(em) + '\n';
+        text += 'Taxas fixas:       ' + formatCurrency(tx) + '\n';
+        if (customCostsText) {
+          text += customCostsText;
+        }
+        var fmt1 = function(v) {
+          return v.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+        };
+
+        text += 'Custos Fixos:      ' + formatCurrency(custoFixoTotal) + '\n';
+        text += 'Custos %:          ' + fmt1(percentualTotal) + '%\n\n';
+
+        text += '\uD83D\uDCC8 MARKUP\n';
+        var desc = getMarkupDescription(markup);
+        text += 'Fator: ' + fmt1(markup) + '\u00D7 \u2014 ' + desc.title + '\n\n';
+
+        text += '\uD83D\uDCB0 RESULTADO\n';
+        text += 'Pre\u00E7o de Venda:    ' + formatCurrency(precoVenda) + '\n';
+        text += 'Lucro Estimado:    ' + formatCurrency(lucro) + '\n';
+        text += 'Margem:            ' + fmt1(margem) + '%\n';
+        text += 'Sa\u00FAde:             ' + healthEmoji + ' ' + healthLabel + '\n\n';
+
+        text += '\uD83D\uDCCA CEN\u00C1RIOS\n';
+        if (consMarkup !== null) {
+          var pCon = calcPreco(consMarkup);
+          var mCon = calcMargemP(pCon);
+          text += '\uD83D\uDD34 Baixo (' + fmt1(consMarkup) + '\u00D7):       ' + (pCon ? formatCurrency(pCon) : '\u2014') + ' \u2014 ' + (mCon !== null ? fmt1(mCon) + '%' : '\u2014') + '\n';
+        } else {
+          text += '\uD83D\uDD34 Baixo: \u2014\n';
+        }
+        var pAtual = calcPreco(markup);
+        var mAtual = calcMargemP(pAtual);
+        text += '\uD83D\uDFE3 Atual (' + fmt1(markup) + '\u00D7):       ' + (pAtual ? formatCurrency(pAtual) : '\u2014') + ' \u2014 ' + (mAtual !== null ? fmt1(mAtual) + '%' : '\u2014') + '\n';
+        var pOti = calcPreco(otiMarkup);
+        var mOti = calcMargemP(pOti);
+        text += '\uD83D\uDFE2 Alto (' + fmt1(otiMarkup) + '\u00D7):        ' + (pOti ? formatCurrency(pOti) : '\u2014') + ' \u2014 ' + (mOti !== null ? fmt1(mOti) + '%' : '\u2014') + '\n\n';
+
+        text += '\u2500'.repeat(3) + '\n';
+        text += 'ive. \u00B7 gerado em ' + dateStr;
+
+        // Copy to clipboard
+        var btn = document.getElementById('btn-export');
+        if (copyTimer) clearTimeout(copyTimer);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = '\u2705 Copiado!';
+            btn.classList.add('copied');
+            copyTimer = setTimeout(function() {
+              btn.textContent = '\uD83D\uDCCB Copiar Resumo';
+              btn.classList.remove('copied');
+              copyTimer = null;
+            }, 2000);
+          }).catch(function() {
+            fallbackCopy(text, btn);
+          });
+        } else {
+          fallbackCopy(text, btn);
+        }
+      }
+
+      function fallbackCopy(text, btn) {
+        if (copyTimer) clearTimeout(copyTimer);
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          btn.textContent = '\u2705 Copiado!';
+          btn.classList.add('copied');
+          copyTimer = setTimeout(function() {
+            btn.textContent = '\uD83D\uDCCB Copiar Resumo';
+            btn.classList.remove('copied');
+            copyTimer = null;
+          }, 2000);
+        } catch (e) {
+          btn.textContent = '\u274C Erro ao copiar';
+          copyTimer = setTimeout(function() {
+            btn.textContent = '\uD83D\uDCCB Copiar Resumo';
+            btn.classList.remove('copied');
+            copyTimer = null;
+          }, 2000);
+        }
+        document.body.removeChild(textarea);
+      }
+
+      /* ===== EVENT BINDINGS ===== */
+
+      // All cost inputs
+      var costInputs = document.querySelectorAll(
+        '#custo-produto, #frete, #embalagem, #taxas'
+      );
+      for (var i = 0; i < costInputs.length; i++) {
+        costInputs[i].addEventListener('input', calculateAll);
+      }
+
+      // Markup slider
+      markupSlider.addEventListener('input', calculateAll);
+
+      // Add custom cost button
+      btnAddCost.addEventListener('click', function() {
+        addCustomCostRow();
+      });
+
+      // Export button
+      var btnExport = document.getElementById('btn-export');
+      if (btnExport) {
+        btnExport.addEventListener('click', copySummary);
+      }
+
+      /* ===== INIT ===== */
+      calculateAll();
+
+    })();
+  </script>
+</body>
+</html>
